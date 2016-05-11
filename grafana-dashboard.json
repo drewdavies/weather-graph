@@ -1,0 +1,157 @@
+{
+  "id": 1,
+  "title": "weather-graph",
+  "originalTitle": "weather-graph",
+  "tags": [],
+  "style": "dark",
+  "timezone": "browser",
+  "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": true,
+  "rows": [
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "200px",
+      "panels": [
+        {
+          "title": "Current Temperature",
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "singlestat",
+          "isNew": true,
+          "id": 1,
+          "targets": [
+            {
+              "refId": "A",
+              "policy": "default",
+              "dsType": "influxdb",
+              "resultFormat": "time_series",
+              "tags": [],
+              "groupBy": [
+                {
+                  "type": "time",
+                  "params": [
+                    "$interval"
+                  ]
+                },
+                {
+                  "type": "fill",
+                  "params": [
+                    "null"
+                  ]
+                }
+              ],
+              "select": [
+                [
+                  {
+                    "type": "field",
+                    "params": [
+                      "temperature"
+                    ]
+                  },
+                  {
+                    "type": "last",
+                    "params": []
+                  }
+                ]
+              ],
+              "measurement": "yvr",
+              "alias": ""
+            }
+          ],
+          "links": [],
+          "datasource": "weather-graph",
+          "maxDataPoints": 100,
+          "interval": null,
+          "cacheTimeout": null,
+          "format": "celsius",
+          "prefix": "",
+          "postfix": "",
+          "nullText": null,
+          "valueMaps": [
+            {
+              "value": "null",
+              "op": "=",
+              "text": "N/A"
+            }
+          ],
+          "nullPointMode": "connected",
+          "valueName": "current",
+          "prefixFontSize": "20%",
+          "valueFontSize": "200%",
+          "postfixFontSize": "20%",
+          "thresholds": "0,15,30",
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(38, 122, 255, 0.9)",
+            "rgba(255, 172, 41, 0.89)",
+            "rgba(255, 43, 43, 0.97)"
+          ],
+          "sparkline": {
+            "show": false,
+            "full": true,
+            "lineColor": "rgb(31, 120, 193)",
+            "fillColor": "rgba(31, 118, 189, 0.18)"
+          },
+          "gauge": {
+            "show": false,
+            "minValue": 0,
+            "maxValue": 30,
+            "thresholdMarkers": false,
+            "thresholdLabels": false
+          },
+          "decimals": 1,
+          "height": ""
+        }
+      ],
+      "title": "Row"
+    }
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "4h",
+      "12h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
+  "schemaVersion": 12,
+  "version": 1,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [],
+      "title": "Powered by Forecast",
+      "type": "link",
+      "url": "http://forecast.io/"
+    }
+  ]
+}
