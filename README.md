@@ -9,3 +9,5 @@ Query for forecast and real-time weather data for visualization within Grafana.
 * Dark Sky Forecast API account
 * InfluxDB
 * Grafana
+
+![Dashboard](screenshot.png)
