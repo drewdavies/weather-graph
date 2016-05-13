@@ -10,4 +10,4 @@ Query for forecast and real-time weather data for visualization within Grafana.
 * InfluxDB
 * Grafana
 
-![Dashboard](screenshot.png)
+![Dashboard](dashboard.png)
