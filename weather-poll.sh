@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # API key generated from https://developer.forecast.io/
-DARK_SKY_API_KEY=""
+DARK_SKY_API_KEY="73e2120d0face37d28ef1c934864f550"
 
 # Latitude/Longitude
 LATITUDE="49.289248"
@@ -65,10 +65,16 @@ elif [[ ${CURRENT_WEATHER[4]} -ge 304 ]] && [[ ${CURRENT_WEATHER[4]} -lt 326 ]];
   STORM_BEARING="NW"
 elif [[ ${CURRENT_WEATHER[4]} -ge 326 ]] && [[ ${CURRENT_WEATHER[4]} -lt 349 ]]; then
   STORM_BEARING="NNW"
+fi
+
 # Error handling if a string is received instead of an integer/float
-elif [[ ${CURRENT_WEATHER[4]} -eq "null" ]]; then
+if [[ ${CURRENT_WEATHER[4]} -eq "null" ]]; then
   CURRENT_WEATHER[4]="999"
   STORM_BEARING=""
+fi
+
+if [[ ${CURRENT_WEATHER[5]} -eq "null" ]]; then
+  CURRENT_WEATHER[5]="0"
 fi
 
 # Write the data to the InfluxDB API
