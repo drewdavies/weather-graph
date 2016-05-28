@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # API key generated from https://developer.forecast.io/
-DARK_SKY_API_KEY="73e2120d0face37d28ef1c934864f550"
+#DARK_SKY_API_KEY=""
 
 # Latitude/Longitude
 LATITUDE="49.289248"
@@ -23,7 +23,7 @@ TEMP_FILE="/tmp/yvr.json"
 INFLUXDB_TIME=$(date -d "$(date +'%Y-%m-%d %H:%M')" +"%s000000000")
 
 # Query data from the Dark Sky API and write to temp file
-curl -s -X GET "https://api.forecast.io/forecast/${DARK_SKY_API_KEY}/${LATITUDE},${LONGITUDE}?units=ca" > $TEMP_FILE
+#curl -s -X GET "https://api.forecast.io/forecast/${DARK_SKY_API_KEY}/${LATITUDE},${LONGITUDE}?units=ca" > $TEMP_FILE
 
 # Change internal field seperator to newline to create array from JSON data
 IFS=$'\n'
@@ -32,10 +32,9 @@ IFS=$'\n'
 CURRENT_WEATHER=($(jq -r ".currently.ozone, .currently.temperature, .currently.precipProbability, .currently.precipIntensity, .currently.nearestStormBearing, .currently.nearestStormDistance, .currently.summary, .currently.apparentTemperature, .currently.dewPoint, .currently.humidity, .currently.windSpeed, .currently.windBearing, .currently.visibility, .currently.cloudCover, .currently.pressure" $TEMP_FILE))
 
 # Convert bearings to strings
-# There is definitely a better way to do this, but this will work for now
-if [[ ${CURRENT_WEATHER[4]} -ge 349 ]] && [[ ${CURRENT_WEATHER[4]} -lt 360 ]] || [[ ${CURRENT_WEATHER[4]} -lt 11 ]]; then
+if [[ ${CURRENT_WEATHER[4]} -ge 349 ]] || [[ ${CURRENT_WEATHER[4]} -lt 11 ]]; then
   STORM_BEARING="N"
-elif [[ ${CURRENT_WEATHER[4]} -ge 11 ]] && [[ ${CURRENT_WEATHER[4]} -lt 34 ]]; then
+elif [[ ${CURRENT_WEATHER[4]} -ge 11 ]] || [[ ${CURRENT_WEATHER[4]} -lt 34 ]]; then
   STORM_BEARING="NNE"
 elif [[ ${CURRENT_WEATHER[4]} -ge 34 ]] && [[ ${CURRENT_WEATHER[4]} -lt 56 ]]; then
   STORM_BEARING="NE"
@@ -47,7 +46,7 @@ elif [[ ${CURRENT_WEATHER[4]} -ge 101 ]] && [[ ${CURRENT_WEATHER[4]} -lt 124 ]];
   STORM_BEARING="ESE"
 elif [[ ${CURRENT_WEATHER[4]} -ge 124 ]] && [[ ${CURRENT_WEATHER[4]} -lt 146 ]]; then
   STORM_BEARING="SE"
-elif [[ ${CURRENT_WEATHER[4]} -ge 146 ]] && [[ ${CURRENT_WEATHER[4]} -lt 169 ]]; then
+elif [[ ${CURRENT_WEATHER[4]} -ge 146 ]] && [[ ${CURRENT_WEATHER[4]} -lt 1695 ]]; then
   STORM_BEARING="SSE"
 elif [[ ${CURRENT_WEATHER[4]} -ge 169 ]] && [[ ${CURRENT_WEATHER[4]} -lt 191 ]]; then
   STORM_BEARING="S"
@@ -65,12 +64,15 @@ elif [[ ${CURRENT_WEATHER[4]} -ge 304 ]] && [[ ${CURRENT_WEATHER[4]} -lt 326 ]];
   STORM_BEARING="NW"
 elif [[ ${CURRENT_WEATHER[4]} -ge 326 ]] && [[ ${CURRENT_WEATHER[4]} -lt 349 ]]; then
   STORM_BEARING="NNW"
+<<<<<<< HEAD
 fi
 
 # Error handling if a string is received instead of an integer/float
 if [[ ${CURRENT_WEATHER[4]} -eq "null" ]]; then
   CURRENT_WEATHER[4]="999"
   STORM_BEARING=""
+=======
+>>>>>>> parent of cbbab3e... Added error handling for storm bearing
 fi
 
 if [[ ${CURRENT_WEATHER[5]} -eq "null" ]]; then
@@ -78,4 +80,4 @@ if [[ ${CURRENT_WEATHER[5]} -eq "null" ]]; then
 fi
 
 # Write the data to the InfluxDB API
-curl -i -X POST "http://${INFLUXDB_SERVER}:8086/write?db=${INFLUXDB_DATABASE}" --data-binary "${INFLUXDB_LOCATION} ozone=${CURRENT_WEATHER[0]},temperature=${CURRENT_WEATHER[1]},precip_probability=${CURRENT_WEATHER[2]},precip_intensity=${CURRENT_WEATHER[3]},storm_bearing=${CURRENT_WEATHER[4]},storm_bearing_dir=\"${STORM_BEARING}\",storm_distance=${CURRENT_WEATHER[5]},summary=\"${CURRENT_WEATHER[6]}\",apparent_temp=${CURRENT_WEATHER[7]},dewpoint=${CURRENT_WEATHER[8]},humidity=${CURRENT_WEATHER[9]},wind_speed=${CURRENT_WEATHER[10]},wind_bearing=${CURRENT_WEATHER[11]},wind_bearing_dir=\"\",visibility=${CURRENT_WEATHER[12]},cloud_cover=${CURRENT_WEATHER[13]},pressure=${CURRENT_WEATHER[14]} $INFLUXDB_TIME"
+curl -i -X POST "http://${INFLUXDB_SERVER}:8086/write?db=${INFLUXDB_DATABASE}" --data-binary "${INFLUXDB_LOCATION} ozone=${CURRENT_WEATHER[0]},temperature=${CURRENT_WEATHER[1]},precip_probability=${CURRENT_WEATHER[2]},precip_intensity=${CURRENT_WEATHER[3]},storm_bearing=${CURRENT_WEATHER[4]},storm_bearing_dir=\"${STORM_BEARING}\",storm_distance=${CURRENT_WEATHER[5]},summary=\"${CURRENT_WEATHER[6]}\",apparent_temp=${CURRENT_WEATHER[7]},dewpoint=${CURRENT_WEATHER[8]},humidity=${CURRENT_WEATHER[9]},wind_speed=${CURRENT_WEATHER[10]},wind_bearing=${CURRENT_WEATHER[11]},visibility=${CURRENT_WEATHER[12]},cloud_cover=${CURRENT_WEATHER[13]},pressure=${CURRENT_WEATHER[14]} $INFLUXDB_TIME"
