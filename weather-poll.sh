@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # API key generated from https://developer.forecast.io/
-#DARK_SKY_API_KEY=""
+DARK_SKY_API_KEY=""
 
 # Latitude/Longitude
 LATITUDE="49.289248"
@@ -64,15 +64,12 @@ elif [[ ${CURRENT_WEATHER[4]} -ge 304 ]] && [[ ${CURRENT_WEATHER[4]} -lt 326 ]];
   STORM_BEARING="NW"
 elif [[ ${CURRENT_WEATHER[4]} -ge 326 ]] && [[ ${CURRENT_WEATHER[4]} -lt 349 ]]; then
   STORM_BEARING="NNW"
-<<<<<<< HEAD
 fi
 
 # Error handling if a string is received instead of an integer/float
 if [[ ${CURRENT_WEATHER[4]} -eq "null" ]]; then
   CURRENT_WEATHER[4]="999"
   STORM_BEARING=""
-=======
->>>>>>> parent of cbbab3e... Added error handling for storm bearing
 fi
 
 if [[ ${CURRENT_WEATHER[5]} -eq "null" ]]; then
